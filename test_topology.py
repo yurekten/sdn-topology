@@ -25,6 +25,11 @@ if __name__ == '__main__':
     call(["mn", "-c"])
 
     # ----------topology inputs -----------------------------
+    # Core network topology
+    # in
+    # De Maesschalck, S., Colle, D., Lievens, I., Pickavet, M., Demeester, P., Mauz, C., ... & Derkacz, J.(2003).
+    # Pan-European optical transport networks: An availability-based comparison.
+    # Photonic Network Communications, 5(3), 203 - 225.
     switch_names = {1: "lon", 2: "ams", 3: "bru", 4: "par", 5: "ham",
                     6: "fra", 7: "str", 8: "zur", 9: "lyn", 10: "ber",
                     11: "mun", 12: "mil", 13: "pra", 14: "vie", 15: "zag",
