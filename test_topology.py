@@ -1,17 +1,13 @@
-from mininet.net import Mininet
-from mininet.cli import CLI
-from mininet.link import TCLink, OVSLink
-from mininet.log import info, setLogLevel
-from mininet.node import OVSSwitch, RemoteController, OVSKernelSwitch
-from subprocess import call
-from functools import partial
-from networkx import nx, minimum_spanning_tree
-from ryu.topology import switches
-import time
-import requests
-import json
-import os
 import logging
+import time
+from functools import partial
+from subprocess import call
+
+from mininet.cli import CLI
+from mininet.link import OVSLink
+from mininet.log import info, setLogLevel
+from mininet.net import Mininet
+from mininet.node import RemoteController, OVSKernelSwitch
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
