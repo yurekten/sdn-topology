@@ -7,7 +7,7 @@ from mininet.cli import CLI
 from mininet.log import info, setLogLevel
 from mininet.net import Mininet
 from mininet.node import RemoteController, OVSKernelSwitch
-from mininet.link import TCLink
+from mininet.link import TCLink, OVSLink
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     OpenFlow14Switch = partial(OVSKernelSwitch, protocols=OPENFLOW_PROTOCOL)
 
     net = Mininet(ipBase=IP_BASE)
-    net.addController("c0", controller=RemoteController, link=TCLink, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
+    net.addController("c0", controller=RemoteController, link=OVSLink, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
 
     try:
         # ----------switches and hosts -----------------------------
@@ -71,6 +71,9 @@ if __name__ == '__main__':
         lon = net.getNodeByName("lon")
         nat = net.addNAT("nat", connect=lon)
         nat_ip = nat.params['ip'].split('/')[0]
+        host = net.addHost('ids')
+        net.addLink(lon, host)
+
         print(f'NAT ip: {nat_ip}')
 
 
