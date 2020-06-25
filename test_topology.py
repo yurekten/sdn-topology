@@ -4,10 +4,10 @@ from functools import partial
 from subprocess import call
 
 from mininet.cli import CLI
-from mininet.link import OVSLink
 from mininet.log import info, setLogLevel
 from mininet.net import Mininet
 from mininet.node import RemoteController, OVSKernelSwitch
+from mininet.link import TCLink
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     OpenFlow14Switch = partial(OVSKernelSwitch, protocols=OPENFLOW_PROTOCOL)
 
     net = Mininet(ipBase=IP_BASE)
-    net.addController("c0", controller=RemoteController, link=OVSLink, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
+    net.addController("c0", controller=RemoteController, link=TCLink, ip=CONTROLLER_IP, port=CONTROLLER_PORT)
 
     try:
         # ----------switches and hosts -----------------------------
@@ -68,10 +68,22 @@ if __name__ == '__main__':
             link = net.addLink(sw1, sw2)
             links[item] = link
 
+        lon = net.getNodeByName("lon")
+        nat = net.addNAT("nat", connect=lon)
+        nat_ip = nat.params['ip'].split('/')[0]
+        print(f'NAT ip: {nat_ip}')
+
+
+
         info('*** Starting network\n')
         net.start()
+
         time.sleep(2)
 
+        for host in net.hosts:
+            if host.inNamespace:
+                host.setDefaultRoute('via %s' % nat_ip)
+        nat.configDefault()
         info('*** Running CLI\n')
         CLI(net)
 
